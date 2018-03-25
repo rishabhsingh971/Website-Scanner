@@ -1,8 +1,8 @@
 import requests
 import validators
-from tld import get_tld
-import socket
+# import socket
 import whois
+from tld import get_tld
 
 # import time
 
@@ -10,19 +10,19 @@ CONNECTION_OK = "connected to internet"
 CONNECTION_NA = "not connected to internet"
 
 
-def check_connection2(url='www.google.com/'):
-    # noinspection PyBroadException
-    try:
-        # see if we can resolve the host name -- tells us if there is
-        # a DNS listening
-        host = socket.gethostbyname(url)
-        # connect to the host -- tells us if the host is actually
-        # reachable
-        socket.create_connection((host, 80), 2)
-        return CONNECTION_OK
-    except:
-        pass
-    return CONNECTION_NA
+# def check_connection2(url='www.google.com/'):
+#     # noinspection PyBroadException
+#     try:
+#         # see if we can resolve the host name -- tells us if there is
+#         # a DNS listening
+#         host = socket.gethostbyname(url)
+#         # connect to the host -- tells us if the host is actually
+#         # reachable
+#         socket.create_connection((host, 80), 2)
+#         return CONNECTION_OK
+#     except:
+#         pass
+#     return CONNECTION_NA
 
 
 def check_connection(url='http://www.google.com/', timeout=5):
