@@ -1,8 +1,8 @@
+import json
 import os
+import pickle
 import subprocess
 import sys
-import pickle
-import json
 
 
 def dir_exists(dir_path):
@@ -28,7 +28,7 @@ def make_dir(dir_path):
 def make_file(file_path, data=None, overwrite=False):
     if not file_exists(file_path) or overwrite:
         with open(file_path, 'w') as file:
-            if data is not None and data != '':
+            if data:
                 file.write(data + '\n')
 
 

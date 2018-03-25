@@ -1,15 +1,19 @@
-from file_func import dir_exists, make_dir, file_size, get_file_path
-from robotexclusionrulesparser import RobotExclusionRulesParser
-from crawler_files import CrawlerFiles
-from contextlib import closing
-from bs4 import BeautifulSoup
-from urllib import parse
-import requests
-import url_func
 import logging
 import time
+from contextlib import closing
+from urllib import parse
+
+import requests
+from bs4 import BeautifulSoup
+from robotexclusionrulesparser import RobotExclusionRulesParser
+
+import url_func
+from crawler_files import CrawlerFiles
+from file_func import dir_exists, make_dir, file_size, get_file_path
 
 logging.getLogger("requests").setLevel(logging.ERROR)
+logging.getLogger("urllib3").setLevel(logging.ERROR)
+logging.getLogger("chardet").setLevel(logging.ERROR)
 logger = logging.getLogger()
 
 
@@ -62,16 +66,16 @@ class Crawler:
         Crawler.find_flname_set = find_flname_set
         Crawler.download_chunk_size = chunk_size
         logger.info('Crawler Initiated')
-        logger.info('* '*20+'Website Info'+'* '*20)
+        logger.info('->Loading Website Info')
+        logger.debug('* ' * 20 + 'Website Info' + '* ' * 20)
         if info is None:
             info = url_func.get_domain_info(Crawler.tld)
             Crawler.cFiles.set_file_data(Crawler.cFiles.info_file, info)
-        print(info)
         for key in info:
             val = info[key]
             if val:
-                logger.info("%-25s : %s" % (str(key).upper(), str(val)))
-        logger.info('*'*40)
+                logger.debug("%-20s : %s" % (str(key).upper(), str(val)))
+        logger.debug('* ' * 40)
 
     @staticmethod
     def crawl_page(t_name, page_url):

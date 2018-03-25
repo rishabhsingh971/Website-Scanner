@@ -1,14 +1,15 @@
-from tkinter import messagebox, ttk
-from scrolled_links import ScrolledLink
-from urllib.error import URLError
-from logging import handlers
-from crawler import Crawler
-from queue import Queue
-from timer import Timer
-import tkinter as tk
-import threading
 import logging
+import threading
 import time
+import tkinter as tk
+from logging import handlers
+from queue import Queue
+from tkinter import messagebox, ttk
+from urllib.error import URLError
+
+from crawler import Crawler
+from scrolled_links import ScrolledLink
+from timer import Timer
 
 logger = logging.getLogger()
 
@@ -110,7 +111,7 @@ class WebsiteScanner:
             start_bus_len = len(Crawler.bad_url_set)
             start_ffs_len = len(Crawler.found_flname_set)
             start_fss_len = len(Crawler.found_string_set)
-            stat = "All Time  : Crawled URLs-%6d | Waiting URLs-%6d | " % (start_cus_len, start_wus_len)
+            stat = "Loading  : Crawled URLs-%6d | Waiting URLs-%6d | " % (start_cus_len, start_wus_len)
             stat += "Bad URLs-%6d | Found Files-%6d | Found String-%6d" % (start_bus_len, start_ffs_len, start_fss_len)
             self.status.set(stat)
             self.load_data()
@@ -125,47 +126,55 @@ class WebsiteScanner:
                 total_timer += 1
                 sess_timer += 1
                 stm = "Curr Session Timer - " + str(sess_timer) + " | "
-                ttm = "All Sessions Timer - " + str(total_timer) + " | "
+                ttm = " All Sessions Timer - " + str(total_timer) + " | "
                 curr_cus_len = len(Crawler.crawled_url_set)
                 curr_wus_len = len(Crawler.waiting_url_set)
                 curr_bus_len = len(Crawler.bad_url_set)
                 curr_ffs_len = len(Crawler.found_flname_set)
                 curr_fss_len = len(Crawler.found_string_set)
-                curr_stat = "Crawled URLs - %-8d | Waiting URLs - %-8d | Bad URLs - %-8d | " % (
+                curr_stat = "Crawled URLs - %-10d | Waiting URLs - %-10d | Bad URLs - %-10d | " % (
                     curr_cus_len - start_cus_len, curr_wus_len, curr_bus_len - start_bus_len)
-                curr_stat += "Found Files - %-8d | Found String - %-8d | " % (
+                curr_stat += "Found Files - %-10d | Found String - %-10d | " % (
                     curr_ffs_len - start_ffs_len, curr_fss_len - start_fss_len)
-                total_stat = "Crawled URLs - %-8d | Waiting URLs - %-8d | Bad URLs - %-8d | " % (
+                total_stat = "Crawled URLs - %-10d | Waiting URLs - %-10d | Bad URLs - %-10d | " % (
                     curr_cus_len, curr_wus_len, curr_bus_len)
-                total_stat += "Found Files - %-8d | Found String - %-8d | " % (curr_ffs_len, curr_fss_len)
-                curr_speed = "Crawl speed - %.2f/s" % ((curr_cus_len - start_cus_len) / sess_timer.tot_sec)
-                total_speed = "Crawl speed - %.2f/s" % (curr_cus_len / total_timer.tot_sec)
-                self.status.set(stm + curr_stat + curr_speed + "\n" + ttm + total_stat + total_speed)
-                time.sleep(1-(time.perf_counter()-delay))
+                total_stat += "Found Files - %-10d | Found String - %-10d | " % (curr_ffs_len, curr_fss_len)
+                self.status.set(stm + curr_stat + "\n" + ttm + total_stat)
+                # Save progress every 2 minutes
+                if total_timer.tot_sec % 120 == 0:
+                    Crawler.update_files()
+                x = 1 - (time.perf_counter() - delay)
+                if x > 0:
+                    time.sleep(x)
             Crawler.update_files()
             self.total_time = total_timer.tot_sec
         except URLError:  # thrown by RERP
             logger.error("Cannot Connect to Internet")
             messagebox.showerror("Error", "Cannot Connect to Internet", parent=self.win)
+        except tk.TclError:
+            pass
         except Exception as e:
             logger.exception("Error in handler")
             messagebox.showerror("Error", e, parent=self.win)
         finally:
             # Removing FileHandler and GuiHandler
-            logger.info("Crawlers Stopped")
-            logger.handlers.pop()
-            logger.handlers.pop()
-            self.win.destroy()
+            try:
+                logger.info("Crawlers Stopped")
+                logger.handlers.pop()
+                logger.handlers.pop()
+                self.win.destroy()
+            except:
+                pass
             return self.total_time
 
     def load_data(self):
-        logger.info("->Loading invalid urls file")
+        logger.info("->Loading invalid urls file...")
         for iu in Crawler.bad_url_set:
             self.invalids.insert_lwl(1.0, "=> " + iu + " \n")
-        logger.info("->Loading found string file")
+        logger.info("->Loading found string file...")
         for fs in Crawler.found_string_set:
             self.strings.insert_lwl(1.0, "=> " + fs + " \n")
-        logger.info("->Loading found files file")
+        logger.info("->Loading found files file...")
         for ff in Crawler.found_flname_set:
             self.files.insert_lwl(1.0, "=> " + ff + " \n")
 
@@ -174,8 +183,8 @@ class WebsiteScanner:
             thread.join(30)
         self.all_thread_stopped = True
 
-    def stop_crawl(self):
-        if messagebox.askquestion("Alert", "Are You Sure?", parent=self.win) == "yes":
+    def stop_crawl(self, finished=False):
+        if finished or messagebox.askquestion("Alert", "Are You Sure?", parent=self.win) == "yes":
             # noinspection PyBroadException
             try:
                 self.stop_request = True
@@ -236,4 +245,4 @@ class WebsiteScanner:
             else:
                 logger.info("Crawling Complete!")
                 messagebox.showinfo("Info", "Crawl Complete!!", parent=self.win)
-                self.win.destroy()
+                self.stop_crawl(finished=True)

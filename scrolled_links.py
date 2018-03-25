@@ -1,8 +1,10 @@
 from tkinter.scrolledtext import ScrolledText
+
 import url_func
 from file_func import open_path
 
 
+# text box with a scroll bar which automatically underlines and colors any valid url
 # noinspection PyBroadException
 class ScrolledLink(ScrolledText):
     def __init__(self, master, **kw):
