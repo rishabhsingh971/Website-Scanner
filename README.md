@@ -25,5 +25,9 @@ Website Scanner can scan all the webpages on a website for searched string or fi
 ## Hardware Requirements 
   *	Must be connected to internet.
   *	Must have enough space to store the data files and requested files. (Space required depends on the website which is to be scanned and options selected by user.)
+## How to run
+* Ensure all the mentioned requirements are fulfilled.
+* Execute run.bat file.
+
 
 
