@@ -1,5 +1,4 @@
 .idea/*
-test.py
 *.ini
 __pycache__/*
-~$thon report.docx
+private
