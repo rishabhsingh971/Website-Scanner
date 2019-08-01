@@ -1,5 +1,5 @@
 # Website-Scanner
-Website Scanner can scan all the webpages on a website for searched string or file with the help of multiple concurrently running web crawlers. 
+Website Scanner can scan a website for broken links and search for specific strings and/or files with the help of multiple concurrently running web crawlers. 
 ## Features:
   *	GUI based.
   *	AutoSaves progress every 2 minutes.
