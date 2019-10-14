@@ -29,8 +29,20 @@ Website Scanner can scan a website for broken links and search for specific stri
   *	Must have enough space to store the data files and requested files. (Space required depends on the website which is to be scanned and options selected by user.)
 
 ## How to run
-* Ensure all the mentioned requirements are fulfilled.
-* Execute run.bat file.
+```bash
+# clone repo
+git clone https://github.com/rishabhsingh971/Website-Scanner.git
+# change directory
+cd cd Website-Scanner
+# install pipenv
+pip install --user --upgrade pipenv
+# install environment
+pipenv install
+# run shell
+pipenv shell
+# run program
+python main.py
+```
 
 ## Input
 <img src="screenshots/input.png" height="50%" width="100%">&nbsp;
