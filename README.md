@@ -33,7 +33,7 @@ Website Scanner can scan a website for broken links and search for specific stri
 # clone repo
 git clone https://github.com/rishabhsingh971/Website-Scanner.git
 # change directory
-cd cd Website-Scanner
+cd Website-Scanner
 # install pipenv
 pip install --user --upgrade pipenv
 # install environment
