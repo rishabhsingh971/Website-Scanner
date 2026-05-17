@@ -365,7 +365,7 @@ def check_var(type, value, min_val=None, max_val=None):
             rv = False
         if max_val and v > max_val:
             rv = False
-    except:
+    except Exception:
         rv = False
     return rv
 

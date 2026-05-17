@@ -49,7 +49,7 @@ def check_url_syntax(url):
     try:
         if not validators.url(str(url)):
             rv = False
-    except:
+    except Exception:
         rv = False
     return rv
 

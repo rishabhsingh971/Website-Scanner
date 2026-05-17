@@ -65,7 +65,7 @@ def pickle_load_from_file(file_path):
         if file_exists(file_path):
             with open(file_path, 'rb') as file:
                 rv = pickle.load(file)
-    except:
+    except Exception:
         pass
     return rv
 
@@ -91,7 +91,7 @@ def json_load_from_file(file_path):
         if file_exists(file_path):
             with open(file_path, 'r') as file:
                 rv = json.load(file)
-    except:
+    except Exception:
         pass
     return rv
 

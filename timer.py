@@ -33,4 +33,3 @@ class Timer:
 
     def __str__(self):
         return "%02d:%02d:%02d" % (self.h, self.m, self.s)
-
