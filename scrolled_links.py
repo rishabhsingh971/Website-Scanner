@@ -62,6 +62,6 @@ class ScrolledLink(ScrolledText):
                 else:
                     ScrolledText.insert(self, line_num + "." + col_num, word)
                 i += len(word)
-        except:
+        except Exception:
             # logger.exception("Error in insertion")
             pass

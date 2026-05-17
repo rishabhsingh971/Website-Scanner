@@ -51,7 +51,7 @@ class CrawlerFiles:
             if not file_func.file_exists(file_path):
                 if file is self.config_file or file is self.waiting_file:
                     file_func.make_file(file_path, start_url)
-                    
+
                 else:
                     file_func.make_file(file_path)
                 logger.info('-> Created %s file' % file)

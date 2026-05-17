@@ -87,7 +87,7 @@ class WebsiteScanner:
                     self.strings.insert_lwl(1.0, "=> " + line[len(Crawler.found_string_prefix):] + " \n")
                 else:
                     self.links.insert_lwl(1.0, line + " \n")
-            except:
+            except Exception:
                 # logger.exception("Error in emitter")
                 pass
 
@@ -163,7 +163,7 @@ class WebsiteScanner:
                 logger.handlers.pop()
                 logger.handlers.pop()
                 self.win.destroy()
-            except:
+            except Exception:
                 pass
             return self.total_time
 
